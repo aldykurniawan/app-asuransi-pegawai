@@ -1,0 +1,67 @@
+version: '3.8'
+services:
+
+  #PHP Service
+  app-kasir:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: kasir
+    container_name: app-kasir
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    ports:
+      - "9022:9000"
+    volumes:
+      - .:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - kasir-network
+
+  #Nginx Service
+  webserver-kasir:
+    image: nginx:alpine
+    container_name: webserver-kasir
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "93:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/laravel/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - kasir-network
+
+  #MySQL Service
+  db-kasir:
+    image: mysql:5.7.22
+    container_name: db-kasir
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3322:3306"
+    environment:
+      MYSQL_DATABASE: db_kasir
+      MYSQL_USER: kasir
+      MYSQL_PASSWORD: Rahasia21
+      MYSQL_ROOT_PASSWORD: Rahasia2122
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql/
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - kasir-network
+
+#Docker Networks
+networks:
+  kasir-network:
+
+#Volumes
+volumes:
+  dbdata:
+    driver: local

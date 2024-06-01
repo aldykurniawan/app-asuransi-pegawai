@@ -1,0 +1,11 @@
+grumphp:
+    extensions:
+        - YieldStudio\GrumPHPLaravelPint\ExtensionLoader
+    tasks:
+        laravel_pint:
+            config: pint.json
+        phpstan:
+            configuration: phpstan.neon
+            use_grumphp_paths: false
+        # phpunit:
+        #   testsuite: Feature
