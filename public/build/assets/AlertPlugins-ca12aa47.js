@@ -1,1 +1,0 @@
-import{S as t}from"./app-c10c3e4b.js";const o=t.mixin({toast:!0,position:"top-end",showConfirmButton:!1,timer:3e3,timerProgressBar:!0,didOpen:e=>{e.addEventListener("mouseenter",t.stopTimer),e.addEventListener("mouseleave",t.resumeTimer)}}),i=(e,r)=>{o.fire({icon:e,text:r})};export{i as t};
